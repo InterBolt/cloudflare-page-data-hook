@@ -32,23 +32,26 @@ const injectScriptWithData = async (element: Element) => {
   element.after(
     `<script>
       window["${WINDOW_ACCESSOR}"] = ${JSON.stringify(data)};
-    </script>`
+    </script>`,
+    { html: true }
   );
 };
 
 export const onRequest: PagesFunction = async ({ next, request }) => {
   // Ensure that we break the browser cache for HTML files since
   // we're injecting potentially updated data into the page.
-  if (isHTMLFile(request.url)) {
-    request.headers.set("cache-control", "no-store");
+  if (!isHTMLFile(request.url)) {
+    return next(request);
   }
 
   const htmlResponse = await next(request);
   const htmlResponseWithApiData = new HTMLRewriter()
-    .on("head", {
-      element: injectScriptWithData,
-    })
+    .on("head", { element: injectScriptWithData })
     .transform(htmlResponse);
+  const htmlResponseWithApiDataAndCacheBreak = new Response(
+    htmlResponseWithApiData.body,
+    { status: 200 }
+  );
 
-  return htmlResponseWithApiData;
+  return htmlResponseWithApiDataAndCacheBreak;
 };
