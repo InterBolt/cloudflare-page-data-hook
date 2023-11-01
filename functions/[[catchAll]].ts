@@ -38,8 +38,7 @@ const injectScriptWithData = async (element: Element) => {
 };
 
 export const onRequest: PagesFunction = async ({ next, request }) => {
-  // Ensure that we break the browser cache for HTML files since
-  // we're injecting potentially updated data into the page.
+  // Skip non-HTML requests. We only inject data into HTML head tags.
   if (!isHTMLFile(request.url)) {
     return next(request);
   }
