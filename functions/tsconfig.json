@@ -5,5 +5,5 @@
     "lib": ["esnext"],
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["./**/*.ts", "../api/**/*.ts"],
+  "include": ["./**/*.ts", "../api/**/*.ts", "../constants.ts"],
 }

@@ -1,12 +1,11 @@
 "use client";
 
-import useCloudflare from "@/src/useCloudflare";
+import useCloudflare from "@/src/useCloudflareInjected";
 import React from "react";
 
 const ClientComponent = () => {
   const posts = useCloudflare("getPosts");
   const profile = useCloudflare("getProfile");
-
   return (
     <div className="flex flex-col items-center w-full min-h-screen p-8 bg-slate-300">
       <div className="w-[1000px] flex bg-gray-100 rounded-xl shadow-2xl">

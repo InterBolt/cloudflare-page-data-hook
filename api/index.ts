@@ -19,9 +19,6 @@ type TProfile = {
 
 type TPost = { userId: number; id: number; title: string; body: string };
 
-// any string that doesn't conflict with other global variables works here
-export const WINDOW_ACCESSOR = "INTERBOLT_CLOUDFLARE_DATA";
-
 export const getPosts = async (): Promise<Array<TPost>> => {
   if (cache["posts"]) {
     return cache["posts"] as Array<TPost>;
@@ -33,10 +30,11 @@ export const getPosts = async (): Promise<Array<TPost>> => {
   return posts;
 };
 
-export const getProfile = async (): Promise<TProfile> => {
+export const getProfile = async (params: { id: string }): Promise<TProfile> => {
   if (cache["profile"]) {
     return cache["profile"] as TProfile;
   }
+  console.log(params);
   const res = await fetch("https://jsonplaceholder.typicode.com/users/1");
   const profile = await res.json();
 
